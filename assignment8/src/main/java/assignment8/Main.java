@@ -17,15 +17,20 @@ public class Main {
 		try {
 			Driver myDriver = new com.mysql.cj.jdbc.Driver();
 			DriverManager.registerDriver(myDriver);
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/INFORMATION_SCHEMA", "root", "hclsql1324");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple_company", "root", "hclsql1324");
 
 			stmt = con.createStatement();
-			rs = stmt.executeQuery("select * from TABLES");
-
+			String sql = "";
+			for(int i = 0; i < 10; i++) {
+				sql = "INSERT INTO user(first_name, last_name, email, username, password, email_verified) VALUES ('fname" + i + "', 'lname" + i + "', 'email" + i + "@hcl.com', 'username" + i + "', 'pword" + i + "', TRUE);";
+				System.out.println(sql);
+				stmt.executeUpdate(sql);
+			}
+			/*
 			while (rs.next()) {
 				System.out.println(rs.getString("TABLE_NAME"));
 			}
-
+			*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
