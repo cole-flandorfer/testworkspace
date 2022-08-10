@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import com.mysql.cj.jdbc.Driver;
+import java.sql.PreparedStatement;
 
 
 public class Main {
@@ -15,8 +16,8 @@ public class Main {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			Driver myDriver = new com.mysql.cj.jdbc.Driver();
-			DriverManager.registerDriver(myDriver);
+			//Driver myDriver = new com.mysql.cj.jdbc.Driver();
+			//DriverManager.registerDriver(myDriver);
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple_company", "root", "hclsql1324");
 
 			stmt = con.createStatement();
@@ -26,16 +27,33 @@ public class Main {
 				System.out.println(sql);
 				stmt.executeUpdate(sql);
 			}
-			/*
+			
+			rs = stmt.executeQuery("SELECT first_name, last_name, email FROM user;");
+			
 			while (rs.next()) {
-				System.out.println(rs.getString("TABLE_NAME"));
+				System.out.println(rs.getString("first_name") + ", " + rs.getString("last_name") + ", " + rs.getString("email"));
 			}
-			*/
+			
+			for(int i = 0; i < 10; i++) {
+				sql = "UPDATE user SET last_name = 'newname" + i + "' WHERE last_name = 'lname" + i + "';";
+				System.out.println(sql);
+				stmt.executeUpdate(sql);
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			rs.close();
 			stmt.close();
+			con.close();
+		}
+		
+		PreparedStatement pstmt = null;
+		try {
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple_company", "root", "hclsql1324");
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			con.close();
 		}
 
