@@ -16,8 +16,8 @@ public class Main {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
-			//Driver myDriver = new com.mysql.cj.jdbc.Driver();
-			//DriverManager.registerDriver(myDriver);
+			Driver myDriver = new com.mysql.cj.jdbc.Driver();
+			DriverManager.registerDriver(myDriver);
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple_company", "root", "hclsql1324");
 
 			stmt = con.createStatement();
@@ -48,9 +48,19 @@ public class Main {
 			con.close();
 		}
 		
-		PreparedStatement pstmt = null;
+		PreparedStatement insertPrep = null;
+		PreparedStatement selectPrep = null;
+		PreparedStatement updatePrep = null;
 		try {
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple_company", "root", "hclsql1324");
+			
+			insertPrep = con.prepareStatement("INSERT INTO user(first_name, last_name, email, username, password, email_verified) VALUES (?, ?, ?, ?, ?, ?)");
+			selectPrep = con.prepareStatement("SELECT * FROM user WHERE last_name = ?");
+			updatePrep = con.prepareStatement("UPDATE user SET  first_name = ? WHERE last_name = ?");
+			
+			
+			selectPrep.setString(1, "newname2");
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
